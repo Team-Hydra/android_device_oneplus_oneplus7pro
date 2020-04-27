@@ -4,7 +4,7 @@ on init
 
 service fingerprint-inscreen-1-0 /system/bin/hw/omni.biometrics.fingerprint.inscreen@1.0-service.oneplus7pro
     interface vendor.omni.biometrics.fingerprint.inscreen@1.0::IFingerprintInscreen default
-    class hal
+    class late_start
     user system
-    group system
+    group system input sdcard_rw uhid
     shutdown critical
