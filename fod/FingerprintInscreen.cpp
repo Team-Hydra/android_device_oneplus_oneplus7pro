@@ -58,6 +58,7 @@ int dimAmount;
 int wide,p3,srgb,night;
 bool dcDimState;
 bool isOneplus7tpro;
+bool isOneplus7tpro5g;
 
 using android::base::GetProperty;
 
@@ -83,7 +84,7 @@ FingerprintInscreen::FingerprintInscreen() {
     this->mVendorFpService = IVendorFingerprintExtensions::getService();
     this->mVendorDisplayService = IOneplusDisplay::getService();
     std::string device = android::base::GetProperty("ro.product.device", "");
-    isOneplus7tpro = device == "oneplus7tpro";
+    isOneplus7tpro5g = device == "oneplus7tpro5g";
 }
 
 Return<void> FingerprintInscreen::onStartEnroll() {
@@ -237,15 +238,15 @@ Return<void> FingerprintInscreen::setCallback(const sp<IFingerprintInscreenCallb
 }
 
 Return<int32_t> FingerprintInscreen::getPositionX() {
-    return 605;
+    return 588;
 }
 
 Return<int32_t> FingerprintInscreen::getPositionY() {
-    return 2612;
+    return 2292;
 }
 
 Return<int32_t> FingerprintInscreen::getSize() {
-    if (isOneplus7tpro) {
+    if (isOneplus7tpro5g) {
         return 273;
     } else {
         return 245;
