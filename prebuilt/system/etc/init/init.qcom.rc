@@ -65,13 +65,13 @@ on boot
     chown system system /proc/touchpanel/letter_s_enable
     chmod 0660 /proc/touchpanel/letter_s_enable
 
-    chmod 0660 /sys/devices/soc/soc:fpc_fpc1020/proximity_state
+    chmod 0777 /sys/devices/soc/soc:fpc_fpc1020/proximity_state
     chown system system /sys/devices/soc/soc:fpc_fpc1020/proximity_state
 
-    chmod 0660 /sys/devices/soc/soc:fpc_fpc1020/key_disable
+    chmod 0777 /sys/devices/soc/soc:fpc_fpc1020/key_disable
     chown system system /sys/devices/soc/soc:fpc_fpc1020/key_disable
 
-    chmod 0660 /sys/devices/platform/soc/soc:goodix_fp/proximity_state
+    chmod 0777 /sys/devices/platform/soc/soc:goodix_fp/proximity_state
     chown system system /sys/devices/platform/soc/soc:goodix_fp/proximity_state
 
     # Graphics
@@ -110,6 +110,7 @@ on boot
     write /data/misc/omni/client_package_name 0
     chown cameraserver audio /data/misc/omni/client_package_name
     chmod 0644 /data/misc/omni/client_package_name
+  
 
 on post-fs
     # Vibrator
