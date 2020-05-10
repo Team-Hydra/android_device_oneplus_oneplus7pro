@@ -57,6 +57,7 @@ int dimAmount;
 int wide,p3,srgb,night;
 bool dcDimState;
 bool isOneplus7tpro;
+bool isoneplus7tpronr;
 
 using android::base::GetProperty;
 
@@ -86,6 +87,7 @@ FingerprintInscreen::FingerprintInscreen() {
 
     std::string device = android::base::GetProperty("ro.product.device", "");
     isOneplus7tpro = device == "oneplus7tpro";
+    isoneplus7tpronr = device == "oneplus7tpronr";
 }
 
 Return<void> FingerprintInscreen::onStartEnroll() {
@@ -233,11 +235,19 @@ Return<int32_t> FingerprintInscreen::getPositionX() {
 }
 
 Return<int32_t> FingerprintInscreen::getPositionY() {
-    return 2612;
+    if (isOneplus7tpronr) {
+        return 2320;
+    } else {
+        return 2612;
+    }
 }
 
 Return<int32_t> FingerprintInscreen::getSize() {
-    return 273;
+    if (isoneplus7tpronr) {
+        return 232;
+    } else {
+        return 273;
+    }
 }
 
 }  // namespace implementation
