@@ -243,7 +243,7 @@ Return<int32_t> FingerprintInscreen::getPositionX() {
 }
 
 Return<int32_t> FingerprintInscreen::getPositionY() {
-    if (isOneplus7pr5g) {
+    if (isOneplus7tpro5g) {
         return 2292;
     } else {
         return 2612;
