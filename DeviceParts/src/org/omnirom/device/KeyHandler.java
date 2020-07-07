@@ -104,6 +104,7 @@ public class KeyHandler implements DeviceKeyHandler {
 
     private static final boolean sIsOnePlus7pro = android.os.Build.DEVICE.equals("oneplus7pro");
     private static final boolean sIsOnePlus7tpro = android.os.Build.DEVICE.equals("oneplus7tpro");
+    private static final boolean sIsOnePlus7tpronr = android.os.Build.DEVICE.equals("oneplus7tpronr");
     private static final boolean sIsOnePlus7t = android.os.Build.DEVICE.equals("oneplus7t");
 
     public static final String CLIENT_PACKAGE_NAME = "com.oneplus.camera";
@@ -451,7 +452,7 @@ public class KeyHandler implements DeviceKeyHandler {
             mClientObserver = new ClientPackageNameObserver(CLIENT_PACKAGE_PATH);
             mClientObserver.startWatching();
         }
-        if (sIsOnePlus7pro || sIsOnePlus7tpro) {
+        if (sIsOnePlus7pro || sIsOnePlus7tpro || sIsOnePlus7tpronr) {
             //mMotorHandler.removeCallbacksAndMessages(mCameraMotorSwitch);
             CameraMotorController.toggleCameraSwitch(true);
         }
@@ -493,7 +494,7 @@ public class KeyHandler implements DeviceKeyHandler {
             mClientObserver.stopWatching();
             mClientObserver = null;
         }
-        if (sIsOnePlus7pro || sIsOnePlus7tpro) {
+        if (sIsOnePlus7pro || sIsOnePlus7tpro || sIsOnePlus7tpronr) {
             CameraMotorController.toggleCameraSwitch(false);
         }
     }
