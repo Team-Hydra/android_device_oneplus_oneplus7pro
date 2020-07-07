@@ -87,7 +87,7 @@ FingerprintInscreen::FingerprintInscreen() {
 
     std::string device = android::base::GetProperty("ro.product.device", "");
     isOneplus7tpro = device == "oneplus7tpro";
-    isoneplus7tpronr = device == "oneplus7tpronr";
+    isOneplus7tpronr = device == "oneplus7tpronr";
 }
 
 Return<void> FingerprintInscreen::onStartEnroll() {
@@ -243,7 +243,7 @@ Return<int32_t> FingerprintInscreen::getPositionY() {
 }
 
 Return<int32_t> FingerprintInscreen::getSize() {
-    if (isoneplus7tpronr) {
+    if (isOneplus7tpronr) {
         return 232;
     } else {
         return 273;
