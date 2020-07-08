@@ -57,7 +57,7 @@ int dimAmount;
 int wide,p3,srgb,night;
 bool dcDimState;
 bool isOneplus7tpro;
-bool isoneplus7tpronr;
+bool isOneplus7tpronr;
 
 using android::base::GetProperty;
 
