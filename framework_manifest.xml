@@ -7,6 +7,7 @@
             <name>IFingerprintInscreen</name>
             <instance>default</instance>
         </interface>
+        <fqname>@1.0::IFingerprintInscreen/default</fqname>
     </hal>
     <hal format="hidl">
         <name>vendor.qti.hardware.sigma_miracast</name>
