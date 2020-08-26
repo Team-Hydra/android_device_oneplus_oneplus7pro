@@ -22,6 +22,7 @@
 #include <hidl/HidlTransportSupport.h>
 #include <fstream>
 
+#define FINGERPRINT_ERROR_CANCELED 5
 #define FINGERPRINT_ACQUIRED_VENDOR 6
 #define FINGERPRINT_ERROR_VENDOR 8
 
@@ -33,17 +34,8 @@
 #define OP_DISPLAY_AOD_MODE 8
 #define OP_DISPLAY_NOTIFY_PRESS 9
 #define OP_DISPLAY_SET_DIM 10
-#define OP_DISPLAY_HIDE_AOD 11
 
-#define HBM_ENABLE_PATH "/sys/class/drm/card0-DSI-1/hbm"
-#define HBM_DIM_PATH "/sys/class/drm/card0-DSI-1/hbm_brightness"
-#define DC_DIM_PATH "/sys/class/drm/card0-DSI-1/dimlayer_bl_en"
 
-#define NATIVE_DISPLAY_P3 "/sys/class/drm/card0-DSI-1/native_display_p3_mode"
-#define NATIVE_DISPLAY_SRGB "/sys/class/drm/card0-DSI-1/native_display_customer_srgb_mode"
-#define NATIVE_DISPLAY_NIGHT "/sys/class/drm/card0-DSI-1/night_mode"
-
-#define NATIVE_DISPLAY_WIDE "/sys/class/drm/card0-DSI-1/native_display_wide_color_mode"
 
 namespace vendor {
 namespace omni {
@@ -81,7 +73,7 @@ static T get(const std::string& path, const T& def) {
 
 FingerprintInscreen::FingerprintInscreen() {
     this->mFodCircleVisible = false;
-    this->mIsEnrolling=false;
+    this->mIsEnrolling = false;
     this->mVendorFpService = IVendorFingerprintExtensions::getService();
     this->mVendorDisplayService = IOneplusDisplay::getService();
 
@@ -91,14 +83,15 @@ FingerprintInscreen::FingerprintInscreen() {
 }
 
 Return<void> FingerprintInscreen::onStartEnroll() {
-    this->mIsEnrolling=true;
+    this->mIsEnrolling = true;
+    this->mVendorFpService->updateStatus(OP_DISABLE_FP_LONGPRESS);
     this->mVendorFpService->updateStatus(OP_RESUME_FP_ENROLL);
 
     return Void();
 }
 
 Return<void> FingerprintInscreen::onFinishEnroll() {
-    this->mIsEnrolling=false;
+    this->mIsEnrolling = false;
     this->mVendorFpService->updateStatus(OP_FINISH_FP_ENROLL);
 
     return Void();
@@ -106,7 +99,7 @@ Return<void> FingerprintInscreen::onFinishEnroll() {
 
 Return<void> FingerprintInscreen::onPress() {
     if (mIsEnrolling) {
-        this->mVendorDisplayService->setMode(OP_DISPLAY_SET_DIM, 8);
+        this->mVendorDisplayService->setMode(OP_DISPLAY_SET_DIM, 1);
     }
     this->mVendorDisplayService->setMode(OP_DISPLAY_NOTIFY_PRESS, 1);
 
@@ -114,58 +107,27 @@ Return<void> FingerprintInscreen::onPress() {
 }
 
 Return<void> FingerprintInscreen::onRelease() {
+    this->mVendorDisplayService->setMode(OP_DISPLAY_SET_DIM, 0);
     this->mVendorDisplayService->setMode(OP_DISPLAY_NOTIFY_PRESS, 0);
-    this->mVendorDisplayService->setMode(OP_DISPLAY_SET_DIM, 5);
 
     return Void();
 }
 
 Return<void> FingerprintInscreen::onShowFODView() {
-    wide = get(NATIVE_DISPLAY_WIDE, 0);
-    p3 = get(NATIVE_DISPLAY_P3, 0);
-    srgb = get(NATIVE_DISPLAY_SRGB, 0);
-    night = get(NATIVE_DISPLAY_NIGHT, 0);
-
-    this->mVendorDisplayService->setMode(16, 0);
-    this->mVendorDisplayService->setMode(17, 0);
-    this->mVendorDisplayService->setMode(18, 0);
-    this->mVendorDisplayService->setMode(20, 0);
-    this->mVendorDisplayService->setMode(21, 0);
-    this->mVendorDisplayService->setMode(17, 1);
-    this->mVendorDisplayService->setMode(19, 0);
-
-    dcDimState = get(DC_DIM_PATH, 0);
-    set(DC_DIM_PATH, 0);
-    set(NATIVE_DISPLAY_P3, 0);
-    set(NATIVE_DISPLAY_SRGB, 0);
-    set(NATIVE_DISPLAY_NIGHT, 0);
-    set(NATIVE_DISPLAY_WIDE, 1);
-
     this->mFodCircleVisible = true;
+    this->mVendorDisplayService->setMode(OP_DISPLAY_AOD_MODE, 0);
+    this->mVendorDisplayService->setMode(OP_DISPLAY_SET_DIM, 0);
+    this->mVendorDisplayService->setMode(OP_DISPLAY_NOTIFY_PRESS, 0);
 
     return Void();
 }
 
 Return<void> FingerprintInscreen::onHideFODView() {
     this->mFodCircleVisible = false;
-
-    set(NATIVE_DISPLAY_WIDE, 0);
-
-    this->mVendorDisplayService->setMode(16, 0);
-    this->mVendorDisplayService->setMode(17, 0);
-    this->mVendorDisplayService->setMode(18, 0);
-    this->mVendorDisplayService->setMode(20, 0);
-    this->mVendorDisplayService->setMode(21, 0);
-    this->mVendorDisplayService->setMode(16, 1);
-    this->mVendorDisplayService->setMode(19, 1);
-
-    set(NATIVE_DISPLAY_WIDE, wide);
-    set(NATIVE_DISPLAY_P3, p3);
-    set(NATIVE_DISPLAY_SRGB, srgb);
-    set(NATIVE_DISPLAY_NIGHT, night);
-    set(DC_DIM_PATH, dcDimState);
-
+    this->mVendorDisplayService->setMode(OP_DISPLAY_AOD_MODE, 0);
     this->mVendorDisplayService->setMode(OP_DISPLAY_SET_DIM, 0);
+    this->mVendorDisplayService->setMode(OP_DISPLAY_NOTIFY_PRESS, 0);
+
     return Void();
 }
 
@@ -198,9 +160,14 @@ Return<bool> FingerprintInscreen::handleAcquired(int32_t acquiredInfo, int32_t v
 
 Return<bool> FingerprintInscreen::handleError(int32_t error, int32_t vendorCode) {
     switch (error) {
+        case FINGERPRINT_ERROR_CANCELED:
+            if (vendorCode == 0) {
+                this->mIsEnrolling = false;
+            }
+            return false;
         case FINGERPRINT_ERROR_VENDOR:
-            // Ignore vendorCode 6
-            return vendorCode == 6;
+            // Ignore vendorCode 5
+            return vendorCode == 5;
         default:
             return false;
     }
