@@ -55,10 +55,11 @@ class FingerprintInscreen : public IFingerprintInscreen {
     Return<int32_t> getSize() override;
 
   private:
-    sp<IOneplusDisplay> mVendorDisplayService;
-    sp<IVendorFingerprintExtensions> mVendorFpService;
     bool mFodCircleVisible;
     bool mIsEnrolling;
+
+    sp<IOneplusDisplay> mVendorDisplayService;
+    sp<IVendorFingerprintExtensions> mVendorFpService;
 
     std::mutex mCallbackLock;
     sp<IFingerprintInscreenCallback> mCallback;
