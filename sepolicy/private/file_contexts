@@ -39,3 +39,5 @@
 # Health - vendor overlay
 /(product|system/product)/vendor_overlay/[0-9]+/bin/hw/android\.hardware\.health@2\.0-service    u:object_r:hal_health_default_exec:s0
 
+# FOD
+/system/bin/hw/vendor\.omni\.biometrics\.fingerprint\.inscreen@1.0-service\.oneplus7pro    u:object_r:hal_fod_exec:s0
