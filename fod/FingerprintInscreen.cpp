@@ -231,12 +231,12 @@ Return<void> FingerprintInscreen::setCallback(const sp<IFingerprintInscreenCallb
 }
 
 Return<int32_t> FingerprintInscreen::getPositionX() {
-    return 598;
+    return 562;
 }
 
 Return<int32_t> FingerprintInscreen::getPositionY() {
     if (isOneplus7tpronr) {
-        return 2320;
+        return 2278;
     } else {
         return 2612;
     }
@@ -244,7 +244,7 @@ Return<int32_t> FingerprintInscreen::getPositionY() {
 
 Return<int32_t> FingerprintInscreen::getSize() {
     if (isOneplus7tpronr) {
-        return 232;
+        return 316;
     } else {
         return 273;
     }
