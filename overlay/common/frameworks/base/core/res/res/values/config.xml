@@ -820,6 +820,8 @@
         <item>error 8</item>
     </string-array>
     
+        <integer name="config_volte_replacement_rat">3</integer>
+    
     <!-- Enable system navigation keys. -->
     <bool name="config_supportSystemNavigationKeys">false</bool>
 </resources>

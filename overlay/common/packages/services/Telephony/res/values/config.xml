@@ -39,5 +39,7 @@
 
     <!-- Allow handover from telephony calls to another ConnectionService. -->
     <bool name="config_support_handover_from">true</bool>
-
+        <bool name="config_support_rtt">true</bool>
+        <bool name="csp_enabled">true</bool>
+            <bool name="world_phone">true</bool>
 </resources>
