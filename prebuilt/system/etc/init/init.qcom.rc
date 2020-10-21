@@ -1,6 +1,7 @@
 on init
     # fingerprint sensor
-    setprop vendor.boot.verifiedbootstate "orange"
+    
+    setprop vendor.boot.fingerprintbstate "orange"
     mount none /system/overlay/EmptyOverlay/EmptyOverlay.apk /vendor/overlay/FrameworksResCommon.apk bind
     mount none /system/overlay/EmptyOverlay/EmptyOverlay.apk /vendor/overlay/FrameworksResTarget.apk bind
     mount none /system/overlay/EmptyOverlay/EmptyOverlay.apk /vendor/overlay/OPFrameworkConfigOverlay.apk bind
@@ -16,7 +17,7 @@ on init
 
 on boot
     # fingerprint sensor
-    setprop vendor.boot.verifiedbootstate "orange"
+    setprop vendor.boot.fingerprintbstate "orange"
     
     # default country code
 #    setprop ro.boot.wificountrycode 00
